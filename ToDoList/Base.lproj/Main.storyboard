@@ -175,7 +175,7 @@
                     <connections>
                         <outlet property="tableView" destination="dWB-aC-kVS" id="tgo-VF-gyS"/>
                         <outlet property="titleView" destination="pvP-IT-EjL" id="0hY-Hj-NOs"/>
-                        <segue destination="ig7-Xu-fEV" kind="presentation" identifier="SettingsSegue" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="KP4-cc-FLb"/>
+                        <segue destination="ig7-Xu-fEV" kind="presentation" identifier="SettingsSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="KP4-cc-FLb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
