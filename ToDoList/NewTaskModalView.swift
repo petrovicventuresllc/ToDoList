@@ -95,7 +95,8 @@ class NewTaskModalView: UIView {
     
     @IBAction func submitButtonTapped(_ sender: Any) {
         guard let caption = descriptionTextView.text,
-        caption.count >= 4 else {
+              descriptionTextView.textColor != UIColor.placeholderText,
+              caption.count >= 4 else {
             return
         }
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
