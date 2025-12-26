@@ -97,6 +97,8 @@ class NewTaskModalView: UIView {
         guard let caption = descriptionTextView.text,
               descriptionTextView.textColor != UIColor.placeholderText,
               caption.count >= 4 else {
+            delegate?.presentErrorAlert(title: "Caption Error", message: "You need to provide a description with 4 or more characters.")
+            
             return
         }
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
@@ -111,7 +113,6 @@ class NewTaskModalView: UIView {
             let userInfo: [String:Task] = ["newTask": task]
             NotificationCenter.default.post(name: NSNotification.Name("com.petrovicventuresllc.createTask"), object: nil, userInfo: userInfo)
         }
-        
         delegate?.closeView()
     }
     
