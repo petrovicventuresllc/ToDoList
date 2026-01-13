@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import os
 
 class NewTaskModalView: UIView {
 
@@ -94,6 +95,7 @@ class NewTaskModalView: UIView {
     }
     
     @IBAction func submitButtonTapped(_ sender: Any) {
+        os_log("Task creation has started. Submit button tapped", type: .info)
         guard let caption = descriptionTextView.text,
               descriptionTextView.textColor != UIColor.placeholderText,
               caption.count >= 4 && caption.count <= 50 else {
@@ -101,6 +103,7 @@ class NewTaskModalView: UIView {
             
             return
         }
+        os_log("Validation of task succeeded", type: .info)
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
         let category = Category.allCases[selectedRow]
         if let task = task {
@@ -111,6 +114,7 @@ class NewTaskModalView: UIView {
             let taskId = UUID().uuidString
             let task = Task(id: taskId, category: category, caption: caption, createdDate: Date(), isComplete: false)
             let userInfo: [String:Task] = ["newTask": task]
+            os_log("Task posted as part of notification", type: .info)
             NotificationCenter.default.post(name: NSNotification.Name("com.petrovicventuresllc.createTask"), object: nil, userInfo: userInfo)
         }
         delegate?.closeView()
