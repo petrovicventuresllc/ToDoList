@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
-    var tasks: [Task] = []
+    var tasks: [TaskModel] = []
     
     //We create the button programatically because we cannot add the button as a subview of a tableview in the interface builder.
     lazy var addButton: UIButton = {
@@ -59,18 +59,19 @@ class HomeViewController: UIViewController {
         - notification: The notification object from the com.petrovicventuresllc.editTask notification
      */
     @objc func editTask(_ notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let taskToUpdate = userInfo["updateTask"] as? Task else {
-            return
-        }
-        let taskIndex = tasks.firstIndex { task in
-            task.id == taskToUpdate.id
-        }
-        guard let taskIndex = taskIndex else {
-            return
-        }
-        tasks[taskIndex] = taskToUpdate
-        tableView.reloadData()
+        //FIXME: - Edit tasks with Core Data
+//        guard let userInfo = notification.userInfo,
+//              let taskToUpdate = userInfo["updateTask"] as? TaskModel else {
+//            return
+//        }
+//        let taskIndex = tasks.firstIndex { task in
+//            task.id == taskToUpdate.id
+//        }
+//        guard let taskIndex = taskIndex else {
+//            return
+//        }
+//        tasks[taskIndex] = taskToUpdate
+//        tableView.reloadData()
     }
     
     /**
@@ -81,7 +82,7 @@ class HomeViewController: UIViewController {
     @objc func createTask(_ notification: Notification) {
         os_log("Task received by notification observer", type: .info)
         guard let userInfo = notification.userInfo,
-              let task = userInfo["newTask"] as? Task else {
+              let task = userInfo["newTask"] as? TaskModel else {
             return
         }
         tasks.append(task)
@@ -139,25 +140,27 @@ extension HomeViewController: UITableViewDataSource {
 //MARK: - Methods conforming to TaskTableViewCellDelegate
 extension HomeViewController: TaskTableViewCellDelegate {
     func editTask(id: String) {
-        let task = tasks.first { task in
-            task.id == id
-        }
-        guard let task = task else {
-            return
-        }
-        let newTaskViewController = NewTaskViewController(task: task)
-        present(newTaskViewController, animated: true)
+        //FIXME: - Edit task with Core Data
+//        let task = tasks.first { task in
+//            task.id == id
+//        }
+//        guard let task = task else {
+//            return
+//        }
+//        let newTaskViewController = NewTaskViewController(task: task)
+//        present(newTaskViewController, animated: true)
     }
     
     func markTask(id: String, complete: Bool) {
-        let taskIndex = tasks.firstIndex { task in
-            task.id == id
-        }
-        guard let taskIndex = taskIndex else {
-            return
-        }
-        tasks[taskIndex].isComplete = complete
-        tableView.reloadData()
+        //FIXME: - Toggle task with Core Data
+//        let taskIndex = tasks.firstIndex { task in
+//            task.id == id
+//        }
+//        guard let taskIndex = taskIndex else {
+//            return
+//        }
+//        tasks[taskIndex].isComplete = complete
+//        tableView.reloadData()
     }
     
 }

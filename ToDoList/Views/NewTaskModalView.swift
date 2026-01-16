@@ -18,7 +18,7 @@ class NewTaskModalView: UIView {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     weak var delegate: NewTaskDelegate?
-    private var task: Task?
+    private var task: TaskModel?
     
     var caption: String {
         get { return descriptionTextView.text }
@@ -26,7 +26,7 @@ class NewTaskModalView: UIView {
     }
     
     
-    init(frame: CGRect, task: Task?) {
+    init(frame: CGRect, task: TaskModel?) {
         super.init(frame: frame)
         self.task = task
         initSubviews()
@@ -59,9 +59,14 @@ class NewTaskModalView: UIView {
         if let task = task {
             descriptionTextView.text = task.caption
             descriptionTextView.textColor = UIColor.label
-            if let rowIndex = Category.allCases.firstIndex(of: task.category) {
+            let taskCategory = Category(rawValue: task.category)!
+            if let rowIndex = Category.allCases.firstIndex(of: taskCategory) {
                 categoryPickerView.selectRow(rowIndex, inComponent: 0, animated: false)
             }
+//            let taskCategory = Category(rawValue: task.category)
+//            if let rowIndex = Category.allCases.firstIndex(of: taskCategory) {
+//                categoryPickerView.selectRow(rowIndex, inComponent: 0, animated: false)
+//            }
         } else {
             descriptionTextView.text = "Add caption..."
             descriptionTextView.textColor = UIColor.placeholderText
@@ -107,13 +112,19 @@ class NewTaskModalView: UIView {
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
         let category = Category.allCases[selectedRow]
         if let task = task {
-            let task = Task(id: task.id, category: category, caption: caption, createdDate: task.createdDate, isComplete: task.isComplete)
-            let userInfo: [String:Task] = ["updateTask": task]
-            NotificationCenter.default.post(name: NSNotification.Name("com.petrovicventuresllc.editTask"), object: nil, userInfo: userInfo)
+            //FIXME: - Add tasks with Core Data
+//            let task = TaskModel(id: task.id, category: category, caption: caption, createdDate: task.createdDate, isComplete: task.isComplete)
+//            let userInfo: [String:TaskModel] = ["updateTask": task]
+//            NotificationCenter.default.post(name: NSNotification.Name("com.petrovicventuresllc.editTask"), object: nil, userInfo: userInfo)
         } else {
-            let taskId = UUID().uuidString
-            let task = Task(id: taskId, category: category, caption: caption, createdDate: Date(), isComplete: false)
-            let userInfo: [String:Task] = ["newTask": task]
+            let managedContext = AppDelegate.sharedAppDelegate.coreDataStack.managedContext
+            let newTask = TaskModel(context: managedContext)
+            newTask.category = category.rawValue
+            newTask.caption = caption
+            newTask.createdDate = Date()
+            newTask.isComplete = false
+            AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+            let userInfo: [String:TaskModel] = ["newTask": newTask]
             os_log("Task posted as part of notification", type: .info)
             NotificationCenter.default.post(name: NSNotification.Name("com.petrovicventuresllc.createTask"), object: nil, userInfo: userInfo)
         }

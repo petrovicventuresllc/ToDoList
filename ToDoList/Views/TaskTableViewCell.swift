@@ -24,7 +24,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var isCompleteImageView: UIImageView!
     @IBOutlet weak var stripView: UIView!
     private weak var delegate: TaskTableViewCellDelegate?
-    private var task: Task!
+    private var task: TaskModel!
     
     private var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
@@ -39,13 +39,14 @@ class TaskTableViewCell: UITableViewCell {
         containerView.clipsToBounds = true
     }
     
-    func configure(withTask task: Task, delegate: TaskTableViewCellDelegate?) {
-        stripView.backgroundColor = task.category.color
-        categoryContainerView.backgroundColor = task.category.secondaryColor
-        categoryLabel.backgroundColor = task.category.color
-        categoryLabel.text = task.category.rawValue
+    func configure(withTask task: TaskModel, delegate: TaskTableViewCellDelegate?) {
+        let taskCategory = Category(rawValue: task.category)!
+        stripView.backgroundColor = taskCategory.color
+        categoryContainerView.backgroundColor = taskCategory.secondaryColor
+        categoryLabel.backgroundColor = taskCategory.color
+        categoryLabel.text = taskCategory.rawValue
         categoryLabel.backgroundColor = .clear
-        categoryLabel.textColor = task.category.color
+        categoryLabel.textColor = taskCategory.color
         captionLabel.text = task.caption
         isCompleteImageView.image = task.isComplete ?
             UIImage(systemName: "checkmark.circle") :
@@ -61,11 +62,13 @@ class TaskTableViewCell: UITableViewCell {
     
     @objc func toggleCompletion() {
         task.isComplete.toggle()
-        delegate?.markTask(id: task.id, complete: task.isComplete)
+        //FIXME: - Toggle task with Core Data
+        //delegate?.markTask(id: task.id, complete: task.isComplete)
     }
     
     @IBAction func editTaskButtonTapped(_ sender: Any) {
-        delegate?.editTask(id: task.id)
+        //FIXME: - Edit task with Core Data
+        //elegate?.editTask(id: task.id)
     }
 
 }
